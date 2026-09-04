@@ -63,7 +63,7 @@ In this hands-on project, I performed the following tasks:
 
 ## Architectural Diagram
 
-![App Screenshot](https://dummyimage.com/468x300?)
+![App Screenshot](https://github.com/VenkataDinakar77/Scalable-Event-Driven-Order-Processing-Architecture-Using-AWS/blob/91ad31bfba6e09845665fd4ba2dc162721dd7111/Event-Driven-Order-Processing-Architecture.png)
 
 
 ## End-to-End Order Processing Workflow

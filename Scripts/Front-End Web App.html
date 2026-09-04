@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Submission Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e3a8a, #020617);
+      color: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 16px;
+      padding: 24px 28px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .card h1 {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .card p.subtitle {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #cbd5f5;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 0.35rem;
+      color: #e5e7eb;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #4b5563;
+      background-color: #020617;
+      color: #f9fafb;
+      font-size: 0.9rem;
+      outline: none;
+      margin-bottom: 0.9rem;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px #38bdf8;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(to right, #38bdf8, #22c55e);
+      color: #020617;
+      margin-top: 4px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 0.9rem;
+      font-size: 0.85rem;
+      min-height: 20px;
+    }
+
+    .status.success {
+      color: #4ade80;
+    }
+
+    .status.error {
+      color: #f97373;
+    }
+
+    .small {
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Order Submission</h1>
+    <p class="subtitle">Create test orders and send them into your AWS serverless pipeline.</p>
+
+    <form id="order-form">
+      <label for="customerName">Customer Name</label>
+      <input id="customerName" name="customerName" placeholder="e.g. Alice Johnson" required />
+
+      <label for="product">Product</label>
+      <input id="product" name="product" placeholder="e.g. Wireless Headphones" required />
+
+      <label for="amount">Amount (in INR)</label>
+      <input id="amount" name="amount" type="number" min="1" placeholder="e.g. 1499" required />
+
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" name="notes" rows="2" placeholder="e.g. Express delivery"></textarea>
+
+      <button type="submit" id="submit-btn">Submit Order</button>
+    </form>
+
+    <div id="status" class="status"></div>
+    <div class="small">This is a demo app for your Serverless Event-Driven Order Processing project.</div>
+  </div>
+
+  <script>
+    // TODO: Replace this with your actual API Gateway endpoint
+    const API_URL = "https://YOUR_API_ID.execute-api.YOUR_REGION.amazonaws.com/prod/order";
+
+    const form = document.getElementById("order-form");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      statusEl.textContent = "";
+      statusEl.className = "status";
+      submitBtn.disabled = true;
+
+      const payload = {
+        customerName: document.getElementById("customerName").value.trim(),
+        product: document.getElementById("product").value.trim(),
+        amount: Number(document.getElementById("amount").value),
+        notes: document.getElementById("notes").value.trim(),
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to create order");
+        }
+
+        statusEl.textContent = `✅ Order created successfully! Order ID: ${data.orderId}`;
+        statusEl.classList.add("success");
+        form.reset();
+      } catch (error) {
+        console.error("Error submitting order:", error);
+        statusEl.textContent = `❌ ${error.message || "Something went wrong"}`;
+        statusEl.classList.add("error");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

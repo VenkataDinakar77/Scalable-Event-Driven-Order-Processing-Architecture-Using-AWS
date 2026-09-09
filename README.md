@@ -1,5 +1,5 @@
 
-# Event-Driven Order Processing System on AWS
+# Scalable Event-Driven Order Processing Architecture Using AWS
 
 To build a serverless, event-driven order pipeline using AWS services.
 

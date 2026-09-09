@@ -25,20 +25,20 @@ I have redesigned the entire order workflow using AWS managed services that supp
 - High-value order isolation
 - Alerts when failures occur
 
-To achieve the above mentioned solution, deployed serverless, event-driven order pipeline using AWS services. Orders flow through API Gateway and Lambda into DynamoDB, trigger downstream processing via Streams, move through SQS for retries, route high-value items with EventBridge Pipes, and surface failures through a DLQ, CloudWatch alarms, and SNS alerts. The result is a scalable, reliable backend with no servers to manage. 
+To achieve the above mentioned solution, deployed a serverless, event-driven order pipeline using AWS services. Orders flow through API Gateway and Lambda into DynamoDB, trigger downstream processing via Streams, move through SQS for retries, route high-value items with EventBridge Pipes, and surface failures through a DLQ, CloudWatch alarms, and SNS alerts. The result is a scalable, reliable backend with no servers to manage. 
 
 
 ## About this project
 
 In this hands-on project, I performed the following tasks:
 
-- Build a **frontend order submission app** (hosted on local system)
-- Store orders and track their status in **DynamoDB**
-- Add **SQS** to handle retries and background processing
-- Build worker Lambdas that update order status and enforce business rules
-- Route high-value orders using **EventBridge Pipes**
-- Add a **DLQ** to capture unprocessed messages
-- Configure **CloudWatch Alarms & SNS** for real-time alerts
+- Built a **frontend order submission app** (hosted on local system)
+- Stored orders and tracked their status in **DynamoDB**
+- Added **SQS** to handle retries and background processing
+- Built worker Lambdas that update order status and enforce business rules
+- Routed high-value orders using **EventBridge Pipes**
+- Added a **DLQ** to capture unprocessed messages
+- Configured **CloudWatch Alarms & SNS** for real-time alerts
 
 ## AWS services used:
 
